@@ -1,0 +1,39 @@
+services:
+  #mongo db database
+  mongodb:
+    container_name: ms_mongodb_daraja
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jonnie254
+      MONGO_INITDB_ROOT_PASSWORD: jonnie254
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo:/data
+    networks:
+      - daraja-net
+    restart: unless-stopped
+
+  # mongo admin dashboard
+  mongo-express:
+    container_name: ms_mongo_daraja
+    image: mongo-express
+    restart: always
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_MONGODB_ADMINUSERNAME: jonnie254
+      ME_CONFIG_MONGODB_ADMINPASSWORD: jonnie254
+    ports:
+      - "8091:8081"
+    networks:
+      - daraja-net
+
+networks:
+    daraja-net:
+        driver: bridge
+
+volumes:
+    mongo:
+      driver: local
